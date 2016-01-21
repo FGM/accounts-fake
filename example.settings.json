@@ -1,0 +1,10 @@
+{
+  "fake": {
+    "secret": "the secret, share you will"
+  },
+  "public": {
+    "fake": {
+      "not-secret": "the secret, share you will"
+    }
+  }
+}

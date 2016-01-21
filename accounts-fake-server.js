@@ -10,7 +10,7 @@
 const SERVICE_NAME = "fake";
 
 /**
- * Return the list of extra fields available on Meteor.user().
+ * Return the list of onProfile fields available on Meteor.user().
  *
  * This is invoked only if autopublish is enabled.
  *
@@ -83,13 +83,16 @@ function loginHandler(loginRequest) {
   // Return a user
   let serviceData = {
     id: userId,
-    extra: { some: "extra" }
+    public: { "voodoo": "chile" },
+    onProfile: { some: "extra" },
+    offProfile: { more: "extra" }
   };
 
   // Publish part of the package-specific user information.
   let userOptions = {
-    profile: serviceData.extra
+    profile: {}
   };
+  userOptions.profile[SERVICE_NAME] = serviceData.onProfile;
 
   return Accounts.updateOrCreateUserFromExternalService(SERVICE_NAME, serviceData, userOptions);
 }

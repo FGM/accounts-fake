@@ -11,6 +11,13 @@ It implements the APIs needed to build a real accounts package, but uses a basic
 | false          | true      | user "foo" created, and logged-in as "foo" |
 | false          | false     | login failure                              |
 
+# Running a demo
+
+Download the demo runner from [https://github.com/FGM/accounts-fake/blob/master/demo-fake.bash]([https://github.com/FGM/accounts-fake/blob/master/demo-fake.bash)
+
+Run it and follow its instructions to walk through a demo of the package.
+
+
 # Logging in and out
 
 This is performed client-side: invoke the Meteor standard login process using the `fake` login service:
@@ -23,6 +30,7 @@ This is performed client-side: invoke the Meteor standard login process using th
 
     // To logout.
     Meteor.logout();
+
 
 # Configuring the package
 
