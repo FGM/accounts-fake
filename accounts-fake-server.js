@@ -72,18 +72,13 @@ function loginHandler(loginRequest) {
     return loginResult;
   }
 
-  // In case of success, ensure user account exists to find its id.
-  let submittedUserId = options.user;
-  let userCriteria = { username: submittedUserId };
-  let userDocument = Meteor.users.findOne(userCriteria);
-  let userId = userDocument
-    ? userDocument._id
-    : submittedUserId;
-  userId = userId.toLocaleLowerCase();
+  // In case of success, normalize the user id to lower case: MongoDB does not
+  // support an efficient case-insensitive find().
+  let submittedUserId = options.user.toLocaleLowerCase();
 
   // Return a user
   let serviceData = {
-    id: userId,
+    id: submittedUserId,
     public: { "voodoo": "chile" },
     onProfile: { some: "extra" },
     offProfile: { more: "extra" }
@@ -95,7 +90,8 @@ function loginHandler(loginRequest) {
   };
   userOptions.profile[SERVICE_NAME] = serviceData.onProfile;
 
-  return Accounts.updateOrCreateUserFromExternalService(SERVICE_NAME, serviceData, userOptions);
+  let handlerResult = Accounts.updateOrCreateUserFromExternalService(SERVICE_NAME, serviceData, userOptions);
+  return handlerResult;
 }
 
 /**
