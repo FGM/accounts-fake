@@ -11,6 +11,7 @@ module.exports = {
     "jQuery": true,
     "React": true,
     "ReactDOM": true,
+    "_": true,
 
     "Accounts": true,
     "Meteor": true,
@@ -19,7 +20,11 @@ module.exports = {
     "Session": true,
     "Template": true,
     "Tinytest": true,
-    "check": true
+    "check": true,
+
+    // The globals defined in this package.
+    "FakeService": true,
+    "FakeConfiguration": true
   },
 
   "plugins": ["react"],
@@ -177,7 +182,7 @@ module.exports = {
     "comma-spacing": [1, {"before": false, "after": true}], // enforce spacing before and after comma
     "comma-style": [1, "last"], // enforce one true comma style (off by default)
     "computed-property-spacing": [2, "never"],
-    "consistent-this": [1, "_this"], // enforces consistent naming when capturing the current execution context (off by default)
+    "consistent-this": [1, "that"], // enforces consistent naming when capturing the current execution context (off by default)
     "eol-last": 2, // enforce newline at the end of file, with no multiple empty lines
     "func-names": 0, // require function expressions to have a name (off by default)
     "func-style": 0, // enforces use of function declarations or expressions (off by default)

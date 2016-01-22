@@ -7,14 +7,16 @@ Package.describe({
   documentation: "README.md"
 });
 
-Package.onUse(function(api) {
+Package.onUse(function (api) {
   api.versionsFrom("1.2.1");
   api.use("ecmascript");
   api.use("check");
   api.use("accounts-base");
   api.use("service-configuration");
   api.addFiles("accounts-fake-client.js", "client");
-  api.addFiles("accounts-fake-server.js", "server");
+  api.addFiles("accounts-fake-configuration.js", "server");
+  api.addFiles("accounts-fake-server-service.js", "server");
+  api.addFiles("accounts-fake-server-wrapper.js", "server");
 });
 
 Package.onTest(function (api) {
