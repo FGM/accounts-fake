@@ -73,12 +73,13 @@ function loginHandler(loginRequest) {
   }
 
   // In case of success, ensure user account exists to find its id.
-  let userName = options.user;
-  let userCriteria = { username: userName };
+  let submittedUserId = options.user;
+  let userCriteria = { username: submittedUserId };
   let userDocument = Meteor.users.findOne(userCriteria);
   let userId = userDocument
     ? userDocument._id
-    : userName.toLocaleLowerCase();
+    : submittedUserId;
+  userId = userId.toLocaleLowerCase();
 
   // Return a user
   let serviceData = {
