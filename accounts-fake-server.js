@@ -53,7 +53,7 @@ function loginHandler(loginRequest) {
     return loginResult;
   }
 
-  let options = loginRequest[SERVICE_NAME];
+  const options = loginRequest[SERVICE_NAME];
 
   // Never forget to check tainted data like these.
   // noinspection JSCheckFunctionSignatures
@@ -74,10 +74,10 @@ function loginHandler(loginRequest) {
 
   // In case of success, normalize the user id to lower case: MongoDB does not
   // support an efficient case-insensitive find().
-  let submittedUserId = options.user.toLocaleLowerCase();
+  const submittedUserId = options.user.toLocaleLowerCase();
 
   // Return a user
-  let serviceData = {
+  const serviceData = {
     id: submittedUserId,
     public: { "voodoo": "chile" },
     onProfile: { some: "extra" },
@@ -85,12 +85,12 @@ function loginHandler(loginRequest) {
   };
 
   // Publish part of the package-specific user information.
-  let userOptions = {
+  const userOptions = {
     profile: {}
   };
   userOptions.profile[SERVICE_NAME] = serviceData.onProfile;
 
-  let handlerResult = Accounts.updateOrCreateUserFromExternalService(SERVICE_NAME, serviceData, userOptions);
+  const handlerResult = Accounts.updateOrCreateUserFromExternalService(SERVICE_NAME, serviceData, userOptions);
   return handlerResult;
 }
 
@@ -104,23 +104,23 @@ function loginHandler(loginRequest) {
  * @return {void}
  */
 function configure() {
-  let settings = Meteor.settings;
-  let secret = settings[SERVICE_NAME].secret;
-  let notSecret = settings.public[SERVICE_NAME]["not-secret"];
+  const settings = Meteor.settings;
+  const secret = settings[SERVICE_NAME].secret;
+  const notSecret = settings.public[SERVICE_NAME]["not-secret"];
 
   if (typeof secret === "undefined" || secret !== notSecret) {
     throw new Meteor.ConfigError(SERVICE_NAME);
   }
 
-  let serviceConfig = {
+  const serviceConfig = {
     service: SERVICE_NAME,
-    secret: secret,
-    notSecret: notSecret
+    secret,
+    notSecret
   };
 
   // Unlike OAuth, we always reload the service configuration on application startup.
-  let configurations = ServiceConfiguration.configurations;
-  let selector = { service: SERVICE_NAME };
+  const configurations = ServiceConfiguration.configurations;
+  const selector = { service: SERVICE_NAME };
   configurations.upsert(selector, serviceConfig);
 }
 
