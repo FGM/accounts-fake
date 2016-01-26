@@ -31,7 +31,7 @@ FakeConfiguration = class FakeConfiguration {
     this.configurations = configurations;
 
     if (typeof this.secret === "undefined" || this.secret !== this.notSecret) {
-      throw new Meteor.ConfigError(this.service);
+      throw new ServiceConfiguration.ConfigError(this.service);
     }
   }
 

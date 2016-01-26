@@ -67,3 +67,19 @@ This means your `settings.json` file should look somehow like this:
 And your application using the package must be called like this to use settings:
 
     meteor --settings settings.json
+
+
+# Running tests
+
+The package can be tested once added to an application. Note that the `test-packages` needs a `--settings` argument like a normal application launch.
+
+    cd <your application>
+    meteor add accounts-fake
+
+    # Create a settings file from the example given.
+    cp packages/accounts-fake/example.settings.json settings.json
+
+    # Run the package test suite.
+    meteor test-packages accounts-fake --settings settings.json
+
+    # Open your browser at http://localhost:3000 to observe the test results.

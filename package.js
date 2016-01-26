@@ -13,6 +13,7 @@ Package.onUse(function (api) {
   api.use("check");
   api.use("accounts-base");
   api.use("service-configuration");
+  api.use("underscore");
   api.addFiles("accounts-fake-client.js", "client");
   api.addFiles("accounts-fake-configuration.js", "server");
   api.addFiles("accounts-fake-server-service.js", "server");
@@ -22,6 +23,12 @@ Package.onUse(function (api) {
 Package.onTest(function (api) {
   api.use("ecmascript");
   api.use("tinytest");
+  api.use("accounts-base");
   api.use("accounts-fake");
-  api.addFiles("accounts-fake-tests.js");
+  api.use("mongo");
+  api.use("service-configuration");
+  api.use("underscore");
+
+  api.addFiles("accounts-fake-configuration.js", "server");
+  api.addFiles("accounts-fake-server-tests.js", "server");
 });
