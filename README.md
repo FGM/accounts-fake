@@ -24,10 +24,10 @@ Run it and follow its instructions to walk through a demo of the package.
 This is performed client-side: invoke the Meteor standard login process using the `fake` login service:
 
     // To successfully log in, possibly creating the "foo" account.
-    Meteor.loginWithFake("foo", true, callback);
+    Meteor.loginWithFake({ user: "foo", action: true }, callback);
 
     // To fail at logging in.
-    Meteor.loginWithFake("foo", false, callback);
+    Meteor.loginWithFake({ user: "foo", action: false }, callback);
 
     // To logout other sessions for the same user, but keep the current one.
     Meteor.logoutOtherClients();
@@ -48,11 +48,14 @@ This package currently uses a simple configuration to demonstrate use of the acc
 
 The package takes its configuration from `Meteor.settings`, exposing its `public` value and hiding its `secret` on the client side.
 
-This means your `settings.json` file must look somehow like this:
+It also uses a `fake.rootKeys` field holding an array of service fields to expose at the root of the user document. By default, these are `profile`, `username`, `emails`, and `onlyWithAutopublish`. The first three will always be available client-side if configured, while the last one will only be available while the `autopublish` package is present.
+
+This means your `settings.json` file should look somehow like this:
 
     {
       "fake": {
-        "secret": "the secret, share you will"
+        "secret": "the secret, share you will",
+        "rootKeys": ["profile", "username", "emails", "onlyWithAutopublish"]
       },
       "public": {
         "fake": {
