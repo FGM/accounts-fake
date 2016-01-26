@@ -42,7 +42,7 @@ FakeConfiguration = class FakeConfiguration {
    */
   persist() {
     const selector = { service: this.service };
-    const serviceConfig = _.extend(selector, {
+    const serviceConfig = _.extend(_.clone(selector), {
       notSecret: this.notSecret,
       rootFields: this.rootFields,
       secret: this.secret

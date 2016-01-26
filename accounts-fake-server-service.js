@@ -36,10 +36,8 @@ FakeService = class FakeService {
    *   - forOtherUsers: an array of fields published to other users
    */
   autopublishFields() {
-    if (!this.configuration) {
-      throw new Meteor.Error("service-unconfigured", "The service needs to be configured");
-    }
-    const rootFields = ["username", "emails", "noluck"];
+    const rootFields = this.getRootFields();
+
     const allFields = ["services." + this.name];
     const publicFields = [allFields + ".public"];
 
@@ -68,7 +66,8 @@ FakeService = class FakeService {
      * - username and emails from accounts-password with builtin support in -base
      * - our own extra field, which will be saved, but only exposed with autopublish
      */
-    ["profile", "username", "emails", "noluck"].forEach(function (property) {
+    const rootFields = this.getRootFields();
+    rootFields.forEach(function (property) {
       if (options[property]) {
         user[property] = options[property];
       }
@@ -139,7 +138,7 @@ FakeService = class FakeService {
       username: submittedUserId,
       emails: [submittedUserId + "@example.com"],
       // But no other field is published unless autopublish is on.
-      noluck: "only with autopublish"
+      onlyWithAutopublish: "only with autopublish"
     };
     userOptions.profile[this.name] = serviceData.onProfile;
 
@@ -161,7 +160,9 @@ FakeService = class FakeService {
     this.accounts.registerLoginHandler(this.name, function (loginRequest) {
       return that.loginHandler(loginRequest);
     });
-    this.accounts.onCreateUser(this.hookUserCreate);
+    this.accounts.onCreateUser(function (options, user) {
+      return that.hookUserCreate(options, user);
+    });
   }
 
   /**
@@ -183,5 +184,28 @@ FakeService = class FakeService {
    */
   setConfiguration(configuration) {
     this.configuration = configuration;
+  }
+
+  /**
+   * Provides the sanitized list of fields to expose at the root of a user object.
+   *
+   * Needs configuration.
+   *
+   * @returns {Array}
+   *   An array of field names.
+   */
+  getRootFields() {
+    if (!this.configuration) {
+      throw new Meteor.Error("service-unconfigured", "The service needs to be configured");
+    }
+    const defaultRootFields = [
+      // From accounts-base.
+      "profile",
+      // From accounts-password with accounts-base support.
+      "username", "emails",
+      // Example of a field only available with autopublish.
+      "onlyWithAutopublish"];
+    const result = _.intersection(defaultRootFields, this.configuration.rootFields);
+    return result;
   }
 };
