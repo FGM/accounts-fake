@@ -18,7 +18,7 @@ service.register();
 
 // Inject its configuration on startup and use it to set up autopublishing.
 Meteor.startup(() => {
-  let configuration = new FakeConfiguration(SERVICE_NAME, Meteor.settings, ServiceConfiguration.configurations);
+  let configuration = new FakeConfiguration(SERVICE_NAME, Meteor.settings, ServiceConfiguration);
   configuration.persist();
   service.setConfiguration(configuration);
   service.registerAutopublish();

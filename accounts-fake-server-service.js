@@ -142,7 +142,7 @@ FakeService = class FakeService {
     };
     userOptions.profile[this.name] = serviceData.onProfile;
 
-    return Accounts.updateOrCreateUserFromExternalService(this.name, serviceData, userOptions);
+    return this.accounts.updateOrCreateUserFromExternalService(this.name, serviceData, userOptions);
   }
 
   /**

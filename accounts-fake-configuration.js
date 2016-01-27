@@ -18,20 +18,21 @@ FakeConfiguration = class FakeConfiguration {
    *   The name of the configuration instance.
    * @param {Object} settings
    *   Meteor settings.
-   * @param {Mongo.Collection} configurations
-   *   The service configuration collection, a Mongo.Collection.
+   * @param {Object} serviceConfiguration
+   *   The ServiceConfiguration service, from the service-configuration package.
+   *
    * @returns {FakeConfiguration}
    *   A memory-only configuration instance.
    */
-  constructor(name, settings, configurations) {
+  constructor(name, settings, serviceConfiguration) {
     this.service = name;
     this.secret = settings[this.service].secret;
     this.rootFields = settings[this.service].rootFields || ["profile"];
     this.notSecret = settings.public[this.service]["not-secret"];
-    this.configurations = configurations;
+    this.configurations = serviceConfiguration.configurations;
 
     if (typeof this.secret === "undefined" || this.secret !== this.notSecret) {
-      throw new ServiceConfiguration.ConfigError(this.service);
+      throw new serviceConfiguration.ConfigError(this.service);
     }
   }
 

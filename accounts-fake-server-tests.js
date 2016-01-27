@@ -1,27 +1,42 @@
-let name = "mock-service";
-let mockConfiguration =  { public: {}};
-mockConfiguration[name] = {
-  secret: "any"
-};
-mockConfiguration.public[name] = {};
-const mockServiceConfiguration = ServiceConfiguration.configurations;
+const SERVICE_NAME = "mock-service";
+
+/**
+ * Setup helper for tests: create a mock settings document.
+ *
+ * @param {String} serviceName
+ *   The name of the login service.
+ *
+ * @returns {{public: {}}}
+ *   A basic settings object.
+ */
+function mockSettings(serviceName) {
+  let mockConfiguration =  { public: {}};
+  mockConfiguration[serviceName] = {
+    secret: "any"
+  };
+  mockConfiguration.public[serviceName] = {};
+
+  return mockConfiguration;
+}
 
 Tinytest.add("Testing correct configuration", function (test) {
-  mockConfiguration.public[name]["not-secret"] = "any";
+  const settings = mockSettings(SERVICE_NAME);
+  settings.public[SERVICE_NAME]["not-secret"] = "any";
 
-  var f = new FakeConfiguration(name, mockConfiguration, mockServiceConfiguration);
+  var f = new FakeConfiguration(SERVICE_NAME, settings, ServiceConfiguration);
 
   test.equal("FakeConfiguration", f.constructor.name);
 });
 
 Tinytest.add("Testing incorrect configuration", function (test) {
-  mockConfiguration.public[name]["not-secret"] = "other";
+  const settings = mockSettings(SERVICE_NAME);
+  settings.public[SERVICE_NAME]["not-secret"] = "other";
 
-  var instantiator = function () {
-    new FakeConfiguration(name, mockConfiguration, mockServiceConfiguration);
+  var instantiation = function () {
+    new FakeConfiguration(SERVICE_NAME, settings, ServiceConfiguration);
   };
 
-  test.throws(instantiator, function (e) {
+  test.throws(instantiation, function (e) {
     return e.name === "ServiceConfiguration.ConfigError";
   });
 });
